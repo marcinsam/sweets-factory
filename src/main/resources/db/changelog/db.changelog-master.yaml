@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: mbozek
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: mbozek
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            sequenceName: user_id_seq
+      changes:
+        - createSequence:
+            sequenceName: user_id_seq
+  - changeSet:
+      id: 3
+      author: mbozek
+      changes:
+        - addColumn:
+            tableName: users
+            column:
+              name: created
+              type: DATETIME

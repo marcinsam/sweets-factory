@@ -7,7 +7,7 @@ import pl.marboz.myproject.model.BaseEntity;
  * Created by Marcin Bozek on 2016-02-18.
  */
 @NoRepositoryBean
-interface BaseRepository<T extends BaseEntity> {
+public interface BaseRepository<T extends BaseEntity> {
 
     public int save(T t);
 

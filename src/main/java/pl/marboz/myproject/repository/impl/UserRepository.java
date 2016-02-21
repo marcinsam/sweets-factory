@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import pl.marboz.myproject.model.User;
-import pl.marboz.myproject.repository.IUserRepository;
+import pl.marboz.myproject.repository.BaseRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by Marcin Bozek on 2016-02-18.
  */
 @Repository
-public class UserRepository implements IUserRepository {
+public class UserRepository implements BaseRepository<User> {
 
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;

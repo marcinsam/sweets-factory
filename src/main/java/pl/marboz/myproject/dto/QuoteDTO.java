@@ -26,4 +26,12 @@ public class QuoteDTO {
     public void setValue(ValueDTO value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "QuoteDTO{" +
+                "type='" + type + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

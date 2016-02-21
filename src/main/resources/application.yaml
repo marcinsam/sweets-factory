@@ -16,3 +16,8 @@ neo4j:
 
 logging:
   path: logs
+
+debug: true
+
+log4j:
+  configurationFile: log4j2.xml

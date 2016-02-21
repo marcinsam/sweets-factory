@@ -12,17 +12,22 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.health.RabbitHealthIndicator;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.client.RestTemplate;
 import pl.marboz.myproject.dto.GitHubUserDTO;
 import pl.marboz.myproject.dto.QuoteDTO;
+import pl.marboz.myproject.dto.ValueDTO;
 import pl.marboz.myproject.service.GitHubLookupService;
+import pl.marboz.myproject.service.ValueService;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
  * Created by Marcin Bozek on 2016-01-16.
  */
 @SpringBootApplication
+@EnableCaching
 public class Application implements CommandLineRunner {
 
     @Value("${rabbitmq.queue.name}")
@@ -39,6 +44,9 @@ public class Application implements CommandLineRunner {
 
     @Autowired
     GitHubLookupService gitHubLookupService;
+
+    @Autowired
+    ValueService valueService;
 
     private static final Logger log = LogManager.getLogger(Application.class);
 
@@ -61,24 +69,41 @@ public class Application implements CommandLineRunner {
         JsonNode jsonNode = objectMapper.readTree(response);
         log.info("name " + objectMapper.treeToValue(jsonNode.path("alanisawesome").path("name"), String.class));
 
-        if(rabbitHealthIndicator.health().getStatus() == Status.UP) {
+        if (rabbitHealthIndicator.health().getStatus() == Status.UP) {
             rabbitTemplate.convertAndSend(queueName, "Hi from RabbitMQ!");
             rabbitTemplate.setReceiveTimeout(5000);
             rabbitTemplate.receiveAndConvert(queueName);
         }
 
+        asyncLookup();
+
+        ValueDTO value = requestQuote(12L);
+        requestQuote(value.getId());
+        requestQuote(10L);
+    }
+
+    private void asyncLookup() throws ExecutionException, InterruptedException {
         Future<GitHubUserDTO> page1 = gitHubLookupService.findGitHubUser("PivotalSoftware");
         Future<GitHubUserDTO> page2 = gitHubLookupService.findGitHubUser("CloudFoundry");
         Future<GitHubUserDTO> page3 = gitHubLookupService.findGitHubUser("Spring-Projects");
 
         do {
-            if(page3.isDone())
+            if (page3.isDone())
                 log.info(page3.get());
-            if(page2.isDone())
+            if (page2.isDone())
                 log.info(page2.get());
-            if(page1.isDone())
+            if (page1.isDone())
                 log.info(page1.get());
         }
-        while(!page3.isDone() || !page2.isDone() || !page1.isDone());
+        while (!page3.isDone() || !page2.isDone() || !page1.isDone());
     }
+
+    private ValueDTO requestQuote(Long id) {
+        long start = System.currentTimeMillis();
+        ValueDTO value = (id != null ? valueService.requestValueDTO(id) : valueService.requestRandomQuote());
+        long elapsed = System.currentTimeMillis();
+        log.info("\"%1$s\"%nCache Miss [%2$s] - Elapsed Time [%3$s ms]%n", value, valueService.isCacheMiss(), elapsed - start);
+        return value;
+    }
+
 }

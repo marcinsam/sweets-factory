@@ -48,7 +48,7 @@ public class Application implements CommandLineRunner {
     @Autowired
     ValueService valueService;
 
-    private static final Logger log = LogManager.getLogger(Application.class);
+    private final Logger log = LogManager.getLogger(Application.class);
 
     private static final String SAMPLE_JSON = "https://docs-examples.firebaseio.com/rest/quickstart/users.json";
 

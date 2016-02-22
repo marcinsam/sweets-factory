@@ -1,10 +1,10 @@
 package pl.marboz.myproject.model.neo4j.entity;
 
+import net.openhft.koloboke.collect.set.hash.HashObjSets;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,7 +30,7 @@ public class Person {
 
     public void worksWith(Person person) {
         if(teammates==null)
-            teammates = new HashSet<>();
+            teammates = HashObjSets.<Person>newMutableSet();
         teammates.add(person);
     }
 

@@ -1,5 +1,6 @@
 package pl.marboz.myproject.repository.impl;
 
+import net.openhft.koloboke.collect.map.hash.HashObjObjMaps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,7 +16,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,10 +30,10 @@ public class UserRepository implements BaseRepository<User> {
     @Override
     public int save(User user) {
         String sql = "insert into users (created, name, email) values (:created, :name, :email)";
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", user.getName());
-        map.put("email", user.getEmail());
-        map.put("created", new Timestamp(System.currentTimeMillis()));
+        Map<String, Object> map = HashObjObjMaps.<String, Object>newImmutableMapOf("name", user.getName(), "email", user.getEmail(), "created", new Timestamp(System.currentTimeMillis()));
+//        map.put("name", user.getName());
+//        map.put("email", user.getEmail());
+//        map.put("created", new Timestamp(System.currentTimeMillis()));
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(map);
         user.setCreated(LocalDateTime.now());
         KeyHolder keyHolder = new GeneratedKeyHolder();

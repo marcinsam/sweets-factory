@@ -35,10 +35,4 @@ public class Neo4jConfig extends Neo4jConfiguration {
     public SessionFactory getSessionFactory() {
         return new SessionFactory("pl.marboz.myproject.model.neo4j.entity");
     }
-
-//    @Bean
-//    @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-//    public Session getSession() throws Exception {
-//        return super.getSession();
-//    }
 }

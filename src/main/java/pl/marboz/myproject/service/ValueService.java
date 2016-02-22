@@ -1,5 +1,6 @@
 package pl.marboz.myproject.service;
 
+import net.openhft.koloboke.collect.map.hash.HashObjLongMaps;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ValueService {
     @Cacheable("Quotes")
     public ValueDTO requestValueDTO(Long id) {
         setCacheMiss();
-        return requestValueDTO(ID_BASED_QUOTE_SERVICE_URL, Collections.singletonMap("id", id));
+        return requestValueDTO(ID_BASED_QUOTE_SERVICE_URL, HashObjLongMaps.newImmutableMap(new String[]{"id"}, new Long[]{id}));
     }
 
     @CachePut(cacheNames = "Quotes", key = "#result.id")

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mobile.device.site.SitePreference;
 import org.springframework.web.bind.annotation.*;
 import pl.marboz.myproject.hateoas.UserResource;
 import pl.marboz.myproject.hateoas.UserResourceAssembler;
@@ -48,6 +49,11 @@ public class UserController {
         Resource<UserResource> wrapped = new Resource<>(userResource, linkTo(UserController.class).withSelfRel());
 
         return ResponseEntity.ok(wrapped);
+    }
+
+    @RequestMapping("/site-preference")
+    public @ResponseBody String sitePreference(SitePreference sitePreference) {
+        return sitePreference != null ? "Hello " + sitePreference.name() + " site preference!" : "Site preference not configured";
     }
 
 }

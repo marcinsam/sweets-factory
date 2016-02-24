@@ -102,7 +102,7 @@ public class Application implements CommandLineRunner {
         long start = System.currentTimeMillis();
         ValueDTO value = (id != null ? valueService.requestValueDTO(id) : valueService.requestRandomQuote());
         long elapsed = System.currentTimeMillis();
-        log.info("\"%1$s\"%nCache Miss [%2$s] - Elapsed Time [%3$s ms]%n", value, valueService.isCacheMiss(), elapsed - start);
+        log.info("{} Cache Miss [{}] - Elapsed Time [{} ms]", value, valueService.isCacheMiss(), elapsed - start);
         return value;
     }
 

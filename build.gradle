@@ -68,6 +68,7 @@ dependencies {
     runtime("net.openhft:koloboke-impl-jdk8:0.6.8")
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.boot:spring-boot-starter-mobile")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 //    compile("org.springframework:spring-context:4.2.4.RELEASE")
 //    compile("org.springframework:spring-tx:4.2.4.RELEASE")
 //    compile("org.hibernate:hibernate-validator:5.2.4.Final")

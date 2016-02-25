@@ -1,4 +1,4 @@
-package pl.marboz.myproject.model.neo4j.entity;
+package pl.marboz.myproject.model.neo4j;
 
 import net.openhft.koloboke.collect.set.hash.HashObjSets;
 import org.neo4j.ogm.annotation.GraphId;

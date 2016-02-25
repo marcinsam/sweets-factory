@@ -2,7 +2,7 @@ package pl.marboz.myproject.repository.neo4j;
 
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.stereotype.Repository;
-import pl.marboz.myproject.model.neo4j.entity.Person;
+import pl.marboz.myproject.model.neo4j.Person;
 
 /**
  * Created by Marcin Bozek on 2016-02-20.

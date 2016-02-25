@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.neo4j.io.fs.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.marboz.myproject.model.neo4j.entity.Person;
+import pl.marboz.myproject.model.neo4j.Person;
 import pl.marboz.myproject.repository.neo4j.PersonRespository;
 
 import java.io.File;

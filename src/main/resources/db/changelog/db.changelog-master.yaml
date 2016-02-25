@@ -43,3 +43,12 @@ databaseChangeLog:
             column:
               name: created
               type: DATETIME
+  - changeSet:
+      id: 4
+      author: mbozek
+      changes:
+        - addColumn:
+            tableName: users
+            column:
+              name: updated
+              type: DATETIME

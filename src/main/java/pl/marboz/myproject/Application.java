@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.health.MongoHealthIndicator;
 import org.springframework.boot.actuate.health.RabbitHealthIndicator;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import pl.marboz.myproject.dto.GitHubUserDTO;
 import pl.marboz.myproject.dto.QuoteDTO;
 import pl.marboz.myproject.dto.ValueDTO;
+import pl.marboz.myproject.model.mongodb.Customer;
+import pl.marboz.myproject.repository.mongodb.CustomerRepository;
 import pl.marboz.myproject.service.GitHubLookupService;
 import pl.marboz.myproject.service.ValueService;
 
@@ -37,16 +40,22 @@ public class Application implements CommandLineRunner {
     private ObjectMapper objectMapper;
 
     @Autowired
-    RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    RabbitHealthIndicator rabbitHealthIndicator;
+    private RabbitHealthIndicator rabbitHealthIndicator;
 
     @Autowired
-    GitHubLookupService gitHubLookupService;
+    private GitHubLookupService gitHubLookupService;
 
     @Autowired
-    ValueService valueService;
+    private ValueService valueService;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private MongoHealthIndicator mongoHealthIndicator;
 
     private final Logger log = LogManager.getLogger(Application.class);
 
@@ -96,6 +105,8 @@ public class Application implements CommandLineRunner {
                 log.info(page1.get());
         }
         while (!page3.isDone() || !page2.isDone() || !page1.isDone());
+
+        mongoDBOps();
     }
 
     private ValueDTO requestQuote(Long id) {
@@ -106,4 +117,18 @@ public class Application implements CommandLineRunner {
         return value;
     }
 
+    private void mongoDBOps() {
+        if(!mongoHealthIndicator.health().getStatus().equals(Status.UP)) return;
+        customerRepository.deleteAll();
+        customerRepository.save(new Customer("Mariano", "Italiano"));
+        customerRepository.save(new Customer("Monica", "Italiano"));
+
+        for(Customer customer : customerRepository.findAll())
+            log.info(customer);
+
+        log.info(customerRepository.findByFirstName("Mariano"));
+
+        for(Customer customer : customerRepository.findByLastName("Italiano"))
+            log.info(customer);
+    }
 }

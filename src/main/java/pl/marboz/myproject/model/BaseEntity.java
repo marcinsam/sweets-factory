@@ -13,6 +13,8 @@ public class BaseEntity implements Identifiable<Long> {
 
     private LocalDateTime created;
 
+    private LocalDateTime updated;
+
     public Long getId() {
         return id;
     }
@@ -27,5 +29,13 @@ public class BaseEntity implements Identifiable<Long> {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
     }
 }

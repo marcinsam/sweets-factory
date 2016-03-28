@@ -30,15 +30,12 @@ public class UserRepository implements BaseRepository<User> {
     @Override
     public int save(User user) {
         String sql = "insert into users (created, name, email) values (:created, :name, :email)";
-        Map<String, Object> map = HashObjObjMaps.<String, Object>newImmutableMapOf("name", user.getName(), "email", user.getEmail(), "created", new Timestamp(System.currentTimeMillis()));
-//        map.put("name", user.getName());
-//        map.put("email", user.getEmail());
-//        map.put("created", new Timestamp(System.currentTimeMillis()));
+        Map<String, Object> map = HashObjObjMaps.<String, Object>newImmutableMapOf("name", user.getName(), "email", user.getEmail(), "created", new Timestamp(System.currentTimeMillis()), "updated", new Timestamp(System.currentTimeMillis()));
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(map);
         user.setCreated(LocalDateTime.now());
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int id = namedParameterJdbcTemplate.update(sql, sqlParameterSource,keyHolder);
-        return id;
+        int id = namedParameterJdbcTemplate.update(sql, sqlParameterSource,keyHolder, new String[]{"id"});
+        return keyHolder.getKey().intValue();
 
     }
 
@@ -68,6 +65,7 @@ public class UserRepository implements BaseRepository<User> {
             user.setCreated(rs.getTimestamp("created").toLocalDateTime());
             user.setName(rs.getString("name"));
             user.setEmail(rs.getString("email"));
+            user.setId(rs.getLong("id"));
             return user;
         }
     }

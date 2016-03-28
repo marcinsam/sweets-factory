@@ -70,3 +70,9 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
+/node_modules
+/src/main/webapp/dist
+/src/main/webapp/assets/styles/main.css
+/.tmp
+/.sass-cache
+/src/main/webapp/bower_components

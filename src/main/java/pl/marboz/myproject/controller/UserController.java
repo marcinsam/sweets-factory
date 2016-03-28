@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Resource<UserResource>> get(@PathVariable("name") String email) {
+    public ResponseEntity<Resource<UserResource>> get(@PathVariable(value = "name") String email) {
         User user = userService.get(email);
 
         UserResource userResource = userResourceAssembler.toResource(user);

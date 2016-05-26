@@ -15,3 +15,13 @@ angular.module('webappApp')
       'Karma'
     ];
   });
+
+$(document).ready(function() {
+    $.ajax({
+        url: "http://localhost:8080/user/kikikoko"
+    }).then(function(data, status, jqxhr) {
+        $('.greeting-id').append(data.userId);
+        $('.greeting-content').append(data.email);
+        console.log(jqxhr);
+    });
+});
